@@ -5,6 +5,7 @@ import com.adammcneilly.apollocaching.CountryListQuery
 import com.adammcneilly.apollocaching.models.CountryDetail
 import com.adammcneilly.apollocaching.models.CountryOverview
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.coroutines.await
 
 class ApolloCountryService(
@@ -19,8 +20,15 @@ class ApolloCountryService(
 
     override suspend fun getCountryDetail(countryCode: String): CountryDetail? {
         val query = CountryDetailQuery(code = countryCode)
-        val response = apolloClient.query(query).await()
+        val response = apolloClient.query(query)
+            .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
+            .await()
         return response.data?.toCountryDetail()
+
+        // apolloClient.query(query)
+        //    .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
+        //    .toDeferred()
+        //    .await()
     }
 }
 
