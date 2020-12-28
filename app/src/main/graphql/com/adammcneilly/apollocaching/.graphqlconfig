@@ -1,0 +1,15 @@
+{
+  "name": "Country GraphQL Schema",
+  "schemaPath": "schema.json",
+  "extensions": {
+    "endpoints": {
+      "CountryAPI": {
+        "url": "https://countries.trevorblades.com/",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
+      }
+    }
+  }
+}
