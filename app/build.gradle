@@ -51,6 +51,7 @@ dependencies {
     implementation("com.apollographql.apollo:apollo-runtime:2.4.6")
     implementation("com.apollographql.apollo:apollo-normalized-cache-sqlite:2.4.6")
     implementation("com.apollographql.apollo:apollo-coroutines-support:2.4.6")
+    implementation("com.apollographql.apollo:apollo-http-cache:2.4.6")
     implementation "org.koin:koin-android:2.2.2"
     implementation "org.koin:koin-android-scope:2.2.2"
     implementation "org.koin:koin-android-viewmodel:2.2.2"
