@@ -20,15 +20,14 @@ class ApolloCountryService(
 
     override suspend fun getCountryDetail(countryCode: String): CountryDetail? {
         val query = CountryDetailQuery(code = countryCode)
-        val response = apolloClient.query(query)
-            .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
-            .await()
-        return response.data?.toCountryDetail()
 
-        // apolloClient.query(query)
-        //    .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
-        //    .toDeferred()
-        //    .await()
+        val response = apolloClient.query(query)
+            .toBuilder()
+            .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
+            .build()
+            .await()
+
+        return response.data?.toCountryDetail()
     }
 }
 
