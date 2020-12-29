@@ -6,6 +6,8 @@ import com.apollographql.apollo.Logger
 /**
  * This is a custom implementation of a [Logger] from Apollo that will take any
  * messages and log them in the Android logcat for debugging purposes.
+ *
+ * Note: There's an open PR to add this into the Apollo library: https://github.com/apollographql/apollo-android/pull/2824
  */
 class ApolloAndroidLogger : Logger {
     override fun log(priority: Int, message: String, t: Throwable?, vararg args: Any) {
