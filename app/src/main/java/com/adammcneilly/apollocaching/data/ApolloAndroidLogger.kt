@@ -15,7 +15,7 @@ class ApolloAndroidLogger : Logger {
         when (priority) {
             Logger.DEBUG -> Log.d(tag, formattedMessage)
             Logger.WARN -> Log.w(tag, formattedMessage)
-            Logger.ERROR -> Log.e(tag, formattedMessage)
+            Logger.ERROR -> Log.e(tag, formattedMessage, t)
             else -> Log.d(tag, formattedMessage)
         }
     }
