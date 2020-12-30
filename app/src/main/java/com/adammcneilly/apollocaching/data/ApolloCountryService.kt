@@ -5,9 +5,7 @@ import com.adammcneilly.apollocaching.CountryListQuery
 import com.adammcneilly.apollocaching.models.CountryDetail
 import com.adammcneilly.apollocaching.models.CountryOverview
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.coroutines.await
-import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 
 class ApolloCountryService(
     private val apolloClient: ApolloClient
