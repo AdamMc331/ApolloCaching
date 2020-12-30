@@ -7,6 +7,7 @@ import com.adammcneilly.apollocaching.models.CountryOverview
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.coroutines.await
+import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 
 class ApolloCountryService(
     private val apolloClient: ApolloClient
@@ -24,6 +25,7 @@ class ApolloCountryService(
         val response = apolloClient.query(query)
             .toBuilder()
             .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
+            .responseFetcher(ApolloResponseFetchers.CACHE_FIRST)
             .build()
             .await()
 
