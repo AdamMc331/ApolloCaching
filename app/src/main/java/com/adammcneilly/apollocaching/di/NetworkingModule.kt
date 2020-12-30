@@ -9,6 +9,7 @@ import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore
 import com.apollographql.apollo.cache.normalized.NormalizedCacheFactory
 import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
 import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
+import com.apollographql.apollo.cache.normalized.sql.SqlNormalizedCacheFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.io.File
@@ -40,7 +41,7 @@ val networkingModule = module {
         ApolloHttpCache(cacheStore, get())
     }
 
-    single<NormalizedCacheFactory<*>> {
+    single {
         val numMegabytes = 10
         val sizeInMegabytes = BYTES_PER_KILOBYTE * KILOBYTES_PER_MEGABYTE * numMegabytes
 
@@ -49,6 +50,17 @@ val networkingModule = module {
             .build()
 
         LruNormalizedCacheFactory(evictionPolicy)
+    }
+
+    single {
+        SqlNormalizedCacheFactory(androidContext(), "apollo.db")
+    }
+
+    single<NormalizedCacheFactory<*>> {
+        val inMemoryCache = get<LruNormalizedCacheFactory>()
+        val sqliteCache = get<SqlNormalizedCacheFactory>()
+        val memoryThenSqliteCache = inMemoryCache.chain(sqliteCache)
+        memoryThenSqliteCache
     }
 
     single {
