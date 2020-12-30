@@ -4,12 +4,14 @@ import com.adammcneilly.apollocaching.data.ApolloAndroidLogger
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.Logger
 import com.apollographql.apollo.api.cache.http.HttpCache
+import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
 import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore
 import com.apollographql.apollo.cache.normalized.NormalizedCacheFactory
 import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
 import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
 import com.apollographql.apollo.cache.normalized.sql.SqlNormalizedCacheFactory
+import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.io.File
@@ -69,6 +71,8 @@ val networkingModule = module {
             .httpCache(get())
             .normalizedCache(get())
             .logger(get())
+            .defaultHttpCachePolicy(HttpCachePolicy.CACHE_FIRST)
+            .defaultResponseFetcher(ApolloResponseFetchers.CACHE_FIRST)
             .build()
     }
 }
