@@ -9,7 +9,6 @@ import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore
 import com.apollographql.apollo.cache.normalized.NormalizedCacheFactory
 import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
 import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
-import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.io.File
@@ -55,9 +54,8 @@ val networkingModule = module {
     single {
         ApolloClient.builder()
             .serverUrl("https://countries.trevorblades.com/")
-//            .httpCache(get())
+            .httpCache(get())
             .normalizedCache(get())
-            .defaultResponseFetcher(ApolloResponseFetchers.CACHE_FIRST)
             .logger(get())
             .build()
     }
