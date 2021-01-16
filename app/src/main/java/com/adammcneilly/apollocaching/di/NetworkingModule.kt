@@ -3,10 +3,14 @@ package com.adammcneilly.apollocaching.di
 import com.adammcneilly.apollocaching.data.ApolloAndroidLogger
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.Logger
+import com.apollographql.apollo.api.Operation
+import com.apollographql.apollo.api.ResponseField
 import com.apollographql.apollo.api.cache.http.HttpCache
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
 import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore
+import com.apollographql.apollo.cache.normalized.CacheKey
+import com.apollographql.apollo.cache.normalized.CacheKeyResolver
 import com.apollographql.apollo.cache.normalized.NormalizedCacheFactory
 import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
 import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
@@ -66,10 +70,27 @@ val networkingModule = module {
     }
 
     single {
+        val resolver = object : CacheKeyResolver() {
+            override fun fromFieldArguments(
+                field: ResponseField,
+                variables: Operation.Variables
+            ): CacheKey {
+                return CacheKey.NO_KEY
+            }
+
+            override fun fromFieldRecordSet(
+                field: ResponseField,
+                recordSet: Map<String, Any>
+            ): CacheKey {
+                val codeProperty = recordSet["code"] as String
+                val typePrefix = recordSet["__typename"] as String
+                return CacheKey.from("$typePrefix.$codeProperty")
+            }
+        }
         ApolloClient.builder()
             .serverUrl("https://countries.trevorblades.com/")
-            .httpCache(get())
-            .normalizedCache(get())
+//            .httpCache(get())
+            .normalizedCache(get(), resolver)
             .logger(get())
             .defaultHttpCachePolicy(HttpCachePolicy.CACHE_FIRST)
             .defaultResponseFetcher(ApolloResponseFetchers.CACHE_FIRST)
