@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.adammcneilly.apollocaching.databinding.ActivityMainBinding
-import org.koin.android.ext.koin.androidContext
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.cache.normalized.NormalizedCache
+import org.koin.android.ext.android.get
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +36,14 @@ class MainActivity : AppCompatActivity() {
      */
     private fun printCaches() {
         printHttpCache()
+        printNormalizedCache()
+    }
+
+    private fun printNormalizedCache() {
+        val apolloClient: ApolloClient = get()
+        val normalizedCacheDump = apolloClient.apolloStore.normalizedCache().dump()
+        val formattedDump = NormalizedCache.prettifyDump(normalizedCacheDump)
+        Log.d("ApolloNormalizedCache", formattedDump)
     }
 
     private fun printHttpCache() {
