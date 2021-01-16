@@ -1,19 +1,22 @@
-query CountryListQuery {
-    countries: countries {
+fragment CountryDetailFragment on Country {
+    code
+    name
+    continent {
         code
         name
+    }
+    capital
+    emoji
+}
+
+query CountryListQuery {
+    countries: countries {
+        ...CountryDetailFragment
     }
 }
 
 query CountryDetailQuery($code: ID!) {
     country: country(code: $code) {
-        code
-        name
-        continent {
-            code
-            name
-        }
-        capital
-        emoji
+        ...CountryDetailFragment
     }
 }
