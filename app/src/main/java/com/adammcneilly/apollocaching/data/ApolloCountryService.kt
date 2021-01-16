@@ -2,6 +2,7 @@ package com.adammcneilly.apollocaching.data
 
 import com.adammcneilly.apollocaching.CountryDetailQuery
 import com.adammcneilly.apollocaching.CountryListQuery
+import com.adammcneilly.apollocaching.fragment.CountryDetailFragment
 import com.adammcneilly.apollocaching.models.CountryDetail
 import com.adammcneilly.apollocaching.models.CountryOverview
 import com.apollographql.apollo.ApolloClient
@@ -22,27 +23,29 @@ class ApolloCountryService(
 
         val response = apolloClient.query(query).await()
 
-        return response.data?.toCountryDetail()
+        return response.data?.country?.fragments?.countryDetailFragment?.toCountryDetail()
     }
 }
 
 private fun CountryListQuery.Data.toCountryOverviewList(): List<CountryOverview> {
     return this.countries.map { country ->
-        CountryOverview(
-            code = country.code,
-            name = country.name
-        )
+        country.fragments.countryDetailFragment.toCountryOverview()
     }
 }
 
-private fun CountryDetailQuery.Data.toCountryDetail(): CountryDetail {
-    val country = this.country
+private fun CountryDetailFragment.toCountryOverview(): CountryOverview {
+    return CountryOverview(
+        code = this.code,
+        name = this.name
+    )
+}
 
+private fun CountryDetailFragment.toCountryDetail(): CountryDetail {
     return CountryDetail(
-        code = country?.code.orEmpty(),
-        name = country?.name.orEmpty(),
-        continentName = country?.continent?.name.orEmpty(),
-        capital = country?.capital.orEmpty(),
-        emoji = country?.emoji.orEmpty()
+        code = this.code,
+        name = this.name,
+        continentName = this.continent.name,
+        capital = this.capital.orEmpty(),
+        emoji = this.emoji,
     )
 }
