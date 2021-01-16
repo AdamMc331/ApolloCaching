@@ -69,13 +69,20 @@ val networkingModule = module {
         memoryThenSqliteCache
     }
 
-    single {
-        val resolver = object : CacheKeyResolver() {
+    single<CacheKeyResolver> {
+        object : CacheKeyResolver() {
             override fun fromFieldArguments(
                 field: ResponseField,
                 variables: Operation.Variables
             ): CacheKey {
-                return CacheKey.NO_KEY
+                // return CacheKey.from(field.resolveArgument("id", variables) as String)
+                return if (field.fieldName == "country") {
+                    val codeProperty = field.resolveArgument("code", variables) as String
+                    val fullId = "Country.$codeProperty"
+                    CacheKey.from(fullId)
+                } else {
+                    CacheKey.NO_KEY
+                }
             }
 
             override fun fromFieldRecordSet(
@@ -87,10 +94,13 @@ val networkingModule = module {
                 return CacheKey.from("$typePrefix.$codeProperty")
             }
         }
+    }
+
+    single {
         ApolloClient.builder()
             .serverUrl("https://countries.trevorblades.com/")
-//            .httpCache(get())
-            .normalizedCache(get(), resolver)
+            .httpCache(get())
+            .normalizedCache(get(), get())
             .logger(get())
             .defaultHttpCachePolicy(HttpCachePolicy.CACHE_FIRST)
             .defaultResponseFetcher(ApolloResponseFetchers.CACHE_FIRST)
