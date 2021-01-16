@@ -75,7 +75,6 @@ val networkingModule = module {
                 field: ResponseField,
                 variables: Operation.Variables
             ): CacheKey {
-                // return CacheKey.from(field.resolveArgument("id", variables) as String)
                 return if (field.fieldName == "country") {
                     val codeProperty = field.resolveArgument("code", variables) as String
                     val fullId = "Country.$codeProperty"
