@@ -48,10 +48,11 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
-    implementation("com.apollographql.apollo:apollo-runtime:2.4.6")
-    implementation("com.apollographql.apollo:apollo-normalized-cache-sqlite:2.4.6")
-    implementation("com.apollographql.apollo:apollo-coroutines-support:2.4.6")
-    implementation("com.apollographql.apollo:apollo-http-cache:2.4.6")
+    implementation("com.apollographql.apollo:apollo-runtime:2.5.2")
+    implementation("com.apollographql.apollo:apollo-android-support:2.5.2")
+    implementation("com.apollographql.apollo:apollo-normalized-cache-sqlite:2.5.2")
+    implementation("com.apollographql.apollo:apollo-coroutines-support:2.5.2")
+    implementation("com.apollographql.apollo:apollo-http-cache:2.5.2")
     implementation "org.koin:koin-android:2.2.2"
     implementation "org.koin:koin-android-scope:2.2.2"
     implementation "org.koin:koin-android-viewmodel:2.2.2"

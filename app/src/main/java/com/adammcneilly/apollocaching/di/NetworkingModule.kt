@@ -1,6 +1,6 @@
 package com.adammcneilly.apollocaching.di
 
-import com.adammcneilly.apollocaching.data.ApolloAndroidLogger
+import com.apollographql.apollo.ApolloAndroidLogger
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.Logger
 import com.apollographql.apollo.api.Operation
